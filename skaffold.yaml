@@ -4,10 +4,8 @@ manifests:
   rawYaml:
     - ./infra/k8s/*
 build:
-  local:
-    push: false
   artifacts:
-    - image: allamasln/ticketcluster-auth
+    - image: auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -15,3 +13,15 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+profiles:
+  - name: local
+    activation:
+      - kubeContext: "default"
+    build:
+      local:
+        push: false
+  - name: gcr
+    build:
+      googleCloudBuild:
+        projectId: ${GCP_PROJECT_ID}
+
