@@ -1,13 +1,5 @@
-import  express from 'express'
+import {app} from './app'
 
 const PORT = 3000
-const app = express()
 
-app.use(express.json())
-
-app.get('/api/users/currentuser', (req, res) => {
-
-    res.json({message: "Rafa"})
-})
-
-app.listen(PORT, () => console.log("Listening on 3000"))
+app.listen(PORT, () => console.log(`Listening on ${PORT}`))
