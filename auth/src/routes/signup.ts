@@ -23,8 +23,8 @@ router.post(
 
     const { email, password } = req.body
 
-    //throw new DatabaseConnectionError()
-    throw new Error('Something went wrong')
+    throw new DatabaseConnectionError()
+
     res.json({ message: 'Register' })
   },
 )
