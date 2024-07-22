@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "bun run src/index.ts",
+    "start": "bun run --hot src/index.ts",
     "lint": "bun eslint src/**/*.ts",
     "lint:fix": "bun eslint src/**/*.ts --fix",
     "format": "bun prettier --write \"src/**/*.{ts,tsx,js,jsx}\""
