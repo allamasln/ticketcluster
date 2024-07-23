@@ -1,4 +1,5 @@
 import { Schema, model, Document, Model } from 'mongoose'
+import { Password } from '../services/password'
 
 interface UserAttributes {
   email: string
@@ -25,6 +26,14 @@ const userSchema = new Schema({
 userSchema.statics.build = (args: UserAttributes) => {
   return new User(args)
 }
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password'))
+    this.password = await Password.toHash(this.password)
+
+  next()
+})
+
 const User = model<UserDocument, UserModel>('User', userSchema)
 
 export { User }
