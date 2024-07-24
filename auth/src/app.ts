@@ -18,7 +18,9 @@ app.set('trust proxy', true)
 const BASE_PATH = '/api/users'
 
 app.use(express.json())
-app.use(cookieSession({ signed: false, secure: true }))
+app.use(
+  cookieSession({ signed: false, secure: process.env.NODE_ENV !== 'test' }),
+)
 
 app.use(BASE_PATH, currentUserRouter)
 app.use(BASE_PATH, signupRouter)

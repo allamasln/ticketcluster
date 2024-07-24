@@ -1,0 +1,4 @@
+#logLevel = "debug"
+[test]
+preload = ["./src/test/setup.ts"]
+root = './src'
