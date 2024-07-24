@@ -4,7 +4,8 @@ import { app } from './app'
 const PORT = 3000
 
 const start = async () => {
-  if (!process.env.JWT_SECRET) throw new Error('JWT_KEY must be defined')
+  if (!process.env.JWT_SECRET)
+    throw new Error('JWT_KEY must be defined')
 
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth')

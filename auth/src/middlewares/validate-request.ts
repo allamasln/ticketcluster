@@ -9,7 +9,8 @@ export function validateRequest(
 ) {
   const errors = validationResult(req)
 
-  if (!errors.isEmpty()) throw new RequestValidationError(errors.array())
+  if (!errors.isEmpty())
+    throw new RequestValidationError(errors.array())
 
   next()
 }

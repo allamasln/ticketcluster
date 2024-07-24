@@ -1,8 +1,11 @@
 import express from 'express'
+import { config } from '../config'
 
 const router = express.Router()
 
-router.post('/signout', (req, res) => {
+const { endpoints } = config
+
+router.post(endpoints.signout, (req, res) => {
   req.session = null
 
   res.json({})

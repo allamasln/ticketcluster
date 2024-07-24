@@ -20,7 +20,10 @@
     "@typescript-eslint/no-unused-vars": ["warn", {
       "argsIgnorePattern": "^_"
     }],
-    "no-empty": ["error", { "allowEmptyCatch": true }]
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+
+    "prettier/prettier": "off",
+    "curly": "off"
   },
   "ignorePatterns": ["node_modules/"]
 }

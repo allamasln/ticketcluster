@@ -8,7 +8,10 @@ export class Password {
     })
   }
 
-  static async compare(suppliedPassword: string, storedPassword: string) {
+  static async compare(
+    suppliedPassword: string,
+    storedPassword: string,
+  ) {
     return await Bun.password.verify(
       suppliedPassword,
       storedPassword,

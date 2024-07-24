@@ -1,86 +1,35 @@
-import { it, expect } from 'bun:test'
-import request from 'supertest'
-import { app } from '../../app'
+import { it, expect, describe } from 'bun:test';
+import { signupRequest } from '../../test/utils';
+import { config } from '../../config';
 
-it('returns a 201 on successful signup', async () => {
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'password',
-    })
-    .expect(201)
-})
+const { password } = config.validation;
 
-it('returns a 400 with an invalid email', async () => {
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test.com',
-      password: 'password',
-    })
-    .expect(400)
-})
+describe('User Signup', () => {
+  it('returns 201 on successful signup', async () => {
+    await signupRequest('test@test.com', 'password').expect(201);
+  });
 
-it('returns a 400 with an invalid password', async () => {
-  const minPasswordLength = 4
-  const maxPasswordLength = 16
+  it('returns 400 for invalid email', async () => {
+    await signupRequest('invalid-email', 'password').expect(400);
+  });
 
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'p'.repeat(minPasswordLength - 1),
-    })
-    .expect(400)
+  it('returns 400 for invalid password length', async () => {
+    await signupRequest('test@test.com', 'p'.repeat(password.minLength - 1)).expect(400);
+    await signupRequest('test@test.com', 'p'.repeat(password.maxLength + 1)).expect(400);
+  });
 
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'p'.repeat(maxPasswordLength + 1),
-    })
-    .expect(400)
-})
+  it('returns 400 for missing email or password', async () => {
+    await signupRequest('test@test.com', '').expect(400);
+    await signupRequest('', 'password').expect(400);
+  });
 
-it('returns a 400 with missing email and password', async () => {
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-    })
-    .expect(400)
+  it('returns 400 for duplicate email', async () => {
+    await signupRequest('test@test.com', 'password').expect(201);
+    await signupRequest('test@test.com', 'password').expect(400);
+  });
 
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      password: 'password',
-    })
-    .expect(400)
-})
-
-it('disallows duplicate emails', async () => {
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'password',
-    })
-    .expect(201)
-
-  await request(app)
-    .post('/api/users/signup')
-    .send({
-      email: 'test@test.com',
-      password: 'password',
-    })
-    .expect(400)
-})
-
-it('sets a cookie after successful signup', async () => {
-  const response = await request(app).post('/api/users/signup').send({
-    email: 'test@test.com',
-    password: 'password',
-  })
-  expect(response.get('Set-Cookie')).toBeDefined()
-})
+  it('sets a cookie after successful signup', async () => {
+    const response = await signupRequest('test@test.com', 'password');
+    expect(response.get('Set-Cookie')).toBeDefined();
+  });
+});

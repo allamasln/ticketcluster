@@ -16,7 +16,11 @@ declare global {
   }
 }
 
-export function requireAuth(req: Request, res: Response, next: NextFunction) {
+export function requireAuth(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   if (!req.session?.jwt) throw new UnauthorizedError()
 
   try {

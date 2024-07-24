@@ -1,9 +1,12 @@
 import express from 'express'
 import { requireAuth } from '../middlewares/require-auth'
+import { config } from '../config'
 
 const router = express.Router()
 
-router.get('/currentuser', requireAuth, (req, res) => {
+const { endpoints } = config
+
+router.get(endpoints.currentUser, requireAuth, (req, res) => {
   res.json({ currentUser: req.user })
 })
 
